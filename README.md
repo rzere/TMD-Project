@@ -6,3 +6,4 @@ We are analyzing Donald Trump’s tweets within the last month (02-25-18/03-25-1
 
 ### Source for tweets: http://www.trumptwitterarchive.com/archive
 ### Source for news articles: http://newsapi.org
+### Documentation for how to install newsapi-python
