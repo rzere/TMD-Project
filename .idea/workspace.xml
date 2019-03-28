@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="582b87c8-8f51-4cb1-96ae-174755d46997" name="Default Changelist" comment="" />
+    <list default="true" id="582b87c8-8f51-4cb1-96ae-174755d46997" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/trump_news.py" beforeDir="false" afterPath="$PROJECT_DIR$/trump_news.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/trump_news.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="426">
-              <caret line="83" column="10" lean-forward="true" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
+              <caret line="83" column="10" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -160,7 +162,7 @@
     <entry file="file://$PROJECT_DIR$/trump_news.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
-          <caret line="83" column="10" lean-forward="true" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
+          <caret line="83" column="10" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>

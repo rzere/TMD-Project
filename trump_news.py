@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import re
 import nltk
+from nltk.corpus import stopwords
 from gensim.models import Word2Vec
 import itertools
 # Init
@@ -49,13 +50,35 @@ for content in raw_content:
     processed_article = re.sub(r'\s+', ' ', processed_article)
     all_sentences = nltk.sent_tokenize(processed_article)
     all_words = [nltk.word_tokenize(sent) for sent in all_sentences]
-    from nltk.corpus import stopwords
     for i in range(len(all_words)):
         all_words[i] = [w for w in all_words[i] if w not in stopwords.words('english')]
     final_list.extend(all_words)
 
 # word_list = list(itertools.chain.from_iterable(final_list))
 word2vec = Word2Vec(final_list, min_count=1)
+word2vec.save("word2vec.model")
 vocabulary = word2vec.wv.vocab
-sim_words = word2vec.wv.most_similar('mueller')
-print(sim_words)
+sim_words = word2vec.wv.most_similar('collusion')
+
+from scipy import spatial
+
+index2word_set = set(word2vec.wv.index2word)
+
+
+def avg_feature_vector(sentence, model, num_features, index2word_set):
+    words = sentence.split()
+    feature_vec = np.zeros((num_features, ), dtype='float32')
+    n_words = 0
+    for word in words:
+        if word in index2word_set:
+            n_words += 1
+            feature_vec = np.add(feature_vec, model[word])
+    if (n_words > 0):
+        feature_vec = np.divide(feature_vec, n_words)
+    return feature_vec
+
+
+s1_afv = avg_feature_vector("No Collusion, No Obstruction, Complete and Total EXONERATION. KEEP AMERICA GREAT!", model=word2vec, num_features=100, index2word_set=index2word_set)
+s2_afv = avg_feature_vector("No Collusion, No Obstruction, Complete and Total EXONERATION.", model=word2vec, num_features=100, index2word_set=index2word_set)
+sim = 1 - spatial.distance.cosine(s1_afv, s2_afv)
+print(sim)
