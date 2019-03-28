@@ -1,6 +1,7 @@
 from newsapi import NewsApiClient
 import pickle
 import pandas as pd
+import numpy as np
 # Init
 newsapi = NewsApiClient(api_key='9f1e0b11257f4b14b0e18428c40a3e97')
 
@@ -21,6 +22,7 @@ except:
                                               from_param='2019-02-29',
                                               language='en',
                                               sort_by='relevancy',
+                                              page_size=100,
                                               page=index)
         final_list.extend(list(all_articles['articles']))
     with open('my_news_list.pkl', 'wb') as f:
@@ -31,4 +33,5 @@ except:
 #
 # print(top_headlines)
 df = pd.DataFrame(final_list)
-print (df.columns)
+df = df.replace(to_replace='None', value=np.nan).dropna()
+
