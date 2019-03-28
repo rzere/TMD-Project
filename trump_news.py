@@ -1,15 +1,34 @@
 from newsapi import NewsApiClient
-import json
-
+import pickle
+import pandas as pd
 # Init
-nap = NewsApiClient(api_key='1d28a210f7b24d87bd0c299d47b53553')
+newsapi = NewsApiClient(api_key='9f1e0b11257f4b14b0e18428c40a3e97')
 
-# for index in range(1, 50):
-#     trump_articles = nap.get_everything(q='Trump',  from_param='2019-02-25', to='2019-03-25', page=index)
-#     with open('trump_news.json', 'a') as outfile:
-#         json.dump(trump_articles['articles'], outfile)
+# /v2/top-headlines
+# for index in range(1, 11):
+#     print (index)
+#     top_headlines = newsapi.get_top_headlines(q='Trump', sources='google-news', page_size=100, page=index)
+#     print(top_headlines)
 
+# /v2/everything
+try:
+    with open('my_news_list.pkl', 'rb') as f:
+        final_list=pickle.load(f)
+except:
+    final_list = list()
+    for index in range(1, 11):
+        all_articles = newsapi.get_everything(q='Trump',
+                                              from_param='2019-02-29',
+                                              language='en',
+                                              sort_by='relevancy',
+                                              page=index)
+        final_list.extend(list(all_articles['articles']))
+    with open('my_news_list.pkl', 'wb') as f:
+        pickle.dump(final_list, f)
 
-with open('trump_news.json') as json_file:
-    data = json.load(json_file)
-    print(data)
+# /v2/sources
+# sources = newsapi.get_sources()
+#
+# print(top_headlines)
+df = pd.DataFrame(final_list)
+print (df.columns)
