@@ -6,6 +6,8 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from gensim.models import Word2Vec
+from sklearn.decomposition import PCA
+from matplotlib import pyplot
 import itertools
 # Init
 newsapi = NewsApiClient(api_key='9f1e0b11257f4b14b0e18428c40a3e97')
@@ -55,7 +57,7 @@ for content in raw_content:
     final_list.extend(all_words)
 
 # word_list = list(itertools.chain.from_iterable(final_list))
-word2vec = Word2Vec(final_list, min_count=1)
+word2vec = Word2Vec(final_list, min_count=10)
 word2vec.save("word2vec.model")
 vocabulary = word2vec.wv.vocab
 sim_words = word2vec.wv.most_similar('collusion')
@@ -73,12 +75,22 @@ def avg_feature_vector(sentence, model, num_features, index2word_set):
         if word in index2word_set:
             n_words += 1
             feature_vec = np.add(feature_vec, model[word])
-    if (n_words > 0):
+    if n_words > 0:
         feature_vec = np.divide(feature_vec, n_words)
     return feature_vec
 
+X = word2vec[word2vec.wv.vocab]
+pca = PCA(n_components=2)
+result = pca.fit_transform(X)
+# create a scatter plot of the projection
+pyplot.scatter(result[:, 0], result[:, 1])
+words = list(word2vec.wv.vocab)
+for i, word in enumerate(words):
+	pyplot.annotate(word, xy=(result[i, 0], result[i, 1]))
+pyplot.show()
 
-s1_afv = avg_feature_vector("No Collusion, No Obstruction, Complete and Total EXONERATION. KEEP AMERICA GREAT!", model=word2vec, num_features=100, index2word_set=index2word_set)
-s2_afv = avg_feature_vector("No Collusion, No Obstruction, Complete and Total EXONERATION.", model=word2vec, num_features=100, index2word_set=index2word_set)
-sim = 1 - spatial.distance.cosine(s1_afv, s2_afv)
-print(sim)
+
+# sentence_trump = "TRUMP IS BAD FOR THE ECONOMY"
+# sentence_president = list(df['description'])[1]
+# distance = word2vec.wmdistance(sentence_trump, sentence_president)
+# print ('distance = %.4f' % distance)
